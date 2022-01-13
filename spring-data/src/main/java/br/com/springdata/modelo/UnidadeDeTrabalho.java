@@ -12,6 +12,17 @@ public class UnidadeDeTrabalho {
 	
 	public UnidadeDeTrabalho() {
 	}
+	
+	public UnidadeDeTrabalho(Integer id, String descricao, String endereco) {
+		this.id = id;
+		this.descricao = descricao;
+		this.endereco = endereco;
+	}
+	
+	public UnidadeDeTrabalho(String descricao, String endereco) {
+		this.descricao = descricao;
+		this.endereco = endereco;
+	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +46,8 @@ public class UnidadeDeTrabalho {
 
 	@Override
 	public String toString() {
-		return "- ID da Unidade de trabalho: " + this.id + " || Nome: " + this.descricao
-				+ " || Endereco: " + this.endereco;
+		return "- ID da Unidade de trabalho: " + this.id + ", Nome: " + this.descricao
+				+ ", Endereco: " + this.endereco;
 	}
 
 }

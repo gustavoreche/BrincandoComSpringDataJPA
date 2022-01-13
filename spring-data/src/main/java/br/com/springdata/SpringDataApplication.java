@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import br.com.springdata.servico.CargoService;
 import br.com.springdata.servico.FuncionarioService;
+import br.com.springdata.servico.UnidadeDeTrabalhoService;
 
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner {
@@ -21,11 +22,14 @@ public class SpringDataApplication implements CommandLineRunner {
 	
 	private final CargoService cargoService;
 	private final FuncionarioService funcionarioService;
+	private final UnidadeDeTrabalhoService unidadeDeTrabalhoService;
 	
 	public SpringDataApplication(CargoService cargoService,
-			FuncionarioService funcionarioService) {
+			FuncionarioService funcionarioService,
+			UnidadeDeTrabalhoService unidadeDeTrabalhoService) {
 		this.cargoService = cargoService;
 		this.funcionarioService = funcionarioService;
+		this.unidadeDeTrabalhoService = unidadeDeTrabalhoService;
 	}
 
 	public static void main(String[] args) {
@@ -57,7 +61,7 @@ public class SpringDataApplication implements CommandLineRunner {
 				this.funcionarioService.inicia(entradaDeDados);
 				break;
 			case UNIDADE_DE_TRABALHO:
-//				this.unidadeDeTrabalhoService.inicia(entradaDeDados);
+				this.unidadeDeTrabalhoService.inicia(entradaDeDados);
 				break;
 			default:
 				System.err.println("Opcao inexistente");

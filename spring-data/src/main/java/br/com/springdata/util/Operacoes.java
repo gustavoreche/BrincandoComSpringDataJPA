@@ -3,6 +3,8 @@ package br.com.springdata.util;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.data.repository.CrudRepository;
@@ -94,6 +96,29 @@ public class Operacoes {
 			}			
 		}
 		return LocalDate.of(0000, 1, 1);
+	}
+	
+	public List<Integer> pegaSomenteListaDeNumero(Scanner entradaDeDados, String mensagem) {
+		Boolean ehNumeroErrado = true;
+		while(ehNumeroErrado) {
+			System.out.print(mensagem);
+			String valor = entradaDeDados.nextLine();
+			try {
+				List<Integer> numerosRetornados = new ArrayList<Integer>();
+				String[] numeros = valor.split(",");
+				for (String numero : numeros) {
+					Integer valorInteiro = Integer.parseInt(numero);
+					numerosRetornados.add(valorInteiro);
+				}
+				ehNumeroErrado = false;
+				return numerosRetornados;
+			} catch (Exception e) {
+				System.err.println("----------------------------------------------------------------");
+				System.err.println("ATENCAO: Nao foi digitado um valor numerico, digite corretamente!");
+				System.err.println("----------------------------------------------------------------");
+			}			
+		}
+		return List.of();
 	}
 
 }

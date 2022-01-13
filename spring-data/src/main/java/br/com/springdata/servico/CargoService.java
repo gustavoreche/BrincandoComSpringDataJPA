@@ -28,6 +28,7 @@ public class CargoService {
 	}
 
 	public void inicia(Scanner entradaDeDados) {
+		this.ficaNoSistema = true;
 		while(this.ficaNoSistema) {
 			String opcaoEscolhida = this.operacoes.escolheOpcao(entradaDeDados, "CARGO");
 			

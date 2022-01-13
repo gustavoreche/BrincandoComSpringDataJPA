@@ -2,12 +2,15 @@ package br.com.springdata.servico;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 import org.springframework.stereotype.Service;
 
 import br.com.springdata.modelo.Cargo;
 import br.com.springdata.modelo.Funcionario;
+import br.com.springdata.modelo.UnidadeDeTrabalho;
 import br.com.springdata.repositorio.FuncionarioRepository;
 import br.com.springdata.util.Operacoes;
 
@@ -24,16 +27,19 @@ public class FuncionarioService {
 	
 	private final FuncionarioRepository funcionarioRepository;
 	private final CargoService cargoService;
+	private final UnidadeDeTrabalhoService unidadeDeTrabalhoService;
 	private final Operacoes operacoes;
 	
 	public FuncionarioService(FuncionarioRepository funcionarioRepository, Operacoes operacoes,
-			CargoService cargoService) {
+			CargoService cargoService, UnidadeDeTrabalhoService unidadeDeTrabalhoService) {
 		this.funcionarioRepository = funcionarioRepository;
 		this.cargoService = cargoService;
+		this.unidadeDeTrabalhoService = unidadeDeTrabalhoService;
 		this.operacoes = operacoes;
 	}
 
 	public void inicia(Scanner entradaDeDados) {
+		this.ficaNoSistema = true;
 		while(this.ficaNoSistema) {
 			String opcaoEscolhida = this.operacoes.escolheOpcao(entradaDeDados, "FUNCIONARIO");
 			
@@ -75,7 +81,13 @@ public class FuncionarioService {
 		this.cargoService.exibeTodosCargos();
 		Integer id = this.operacoes.pegaSomenteNumero(entradaDeDados, "Digite o ID do cargo do funcionario: ");
 		Cargo cargo = this.cargoService.buscaCargoPorId(id);
-		Funcionario funcionario = new Funcionario(nome, cpf, salario, dataContratacao, cargo);
+		this.unidadeDeTrabalhoService.exibeTodasUnidadesDeTrabalho();
+		List<Integer> idsUnidadeDeTrabalho = this.operacoes.pegaSomenteListaDeNumero(entradaDeDados, 
+				"Digite os ID da unidade de trabalho do funcionario, separados por virgula(Exemplo: 1, 2, 3): ");
+		List<UnidadeDeTrabalho> unidadesDeTrabalho = new ArrayList<UnidadeDeTrabalho>();
+		idsUnidadeDeTrabalho.forEach(idUnidade -> unidadesDeTrabalho.add(this.unidadeDeTrabalhoService
+				.buscaPorId(idUnidade)));
+		Funcionario funcionario = new Funcionario(nome, cpf, salario, dataContratacao, cargo, unidadesDeTrabalho);
 		this.funcionarioRepository.save(funcionario);
 		System.out.println("Funcionario SALVO!");
 		System.out.println("------------------------------------");
@@ -95,7 +107,13 @@ public class FuncionarioService {
 		this.cargoService.exibeTodosCargos();
 		Integer idCargo = this.operacoes.pegaSomenteNumero(entradaDeDados, "Digite o novo ID do cargo do funcionario: ");
 		Cargo cargo = this.cargoService.buscaCargoPorId(idCargo);
-		Funcionario funcionario = new Funcionario(id, nome, cpf, salario, dataContratacao, cargo);
+		this.unidadeDeTrabalhoService.exibeTodasUnidadesDeTrabalho();
+		List<Integer> idsUnidadeDeTrabalho = this.operacoes.pegaSomenteListaDeNumero(entradaDeDados, 
+				"Digite os novos ID da unidade de trabalho do funcionario, separados por virgula(Exemplo: 1, 2, 3): ");
+		List<UnidadeDeTrabalho> unidadesDeTrabalho = new ArrayList<UnidadeDeTrabalho>();
+		idsUnidadeDeTrabalho.forEach(idUnidade -> unidadesDeTrabalho.add(this.unidadeDeTrabalhoService
+				.buscaPorId(idUnidade)));
+		Funcionario funcionario = new Funcionario(id, nome, cpf, salario, dataContratacao, cargo, unidadesDeTrabalho);
 		this.funcionarioRepository.save(funcionario);
 		System.out.println("Funcionario ATUALIZADO!");
 		System.out.println("------------------------------------");
