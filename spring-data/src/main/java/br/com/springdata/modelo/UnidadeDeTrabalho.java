@@ -7,19 +7,10 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "tb_cargo")
-public class Cargo {
+@Table(name = "tb_unidade_de_trabalho")
+public class UnidadeDeTrabalho {
 	
-	public Cargo() {
-	}
-	
-	public Cargo(Integer idCargo, String nomeCargo) {
-		this.id = idCargo;
-		this.descricao = nomeCargo;
-	}
-	
-	public Cargo(String descricao) {
-		this.descricao = descricao;
+	public UnidadeDeTrabalho() {
 	}
 
 	@Id
@@ -27,18 +18,25 @@ public class Cargo {
 	private Integer id;
 	
 	private String descricao;
-
+	
+	private String endereco;
+	
 	public Integer getId() {
 		return id;
 	}
-
+	
 	public String getDescricao() {
 		return descricao;
 	}
-	
+
+	public String getEndereco() {
+		return endereco;
+	}
+
 	@Override
 	public String toString() {
-		return "- ID do Cargo: " + this.id + ", Cargo: " + this.descricao;
+		return "- ID da Unidade de trabalho: " + this.id + " || Nome: " + this.descricao
+				+ " || Endereco: " + this.endereco;
 	}
 
 }
