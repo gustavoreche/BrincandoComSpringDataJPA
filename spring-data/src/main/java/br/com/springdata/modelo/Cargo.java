@@ -10,6 +10,13 @@ import javax.persistence.Table;
 @Table(name = "tb_cargo")
 public class Cargo {
 	
+	public Cargo() {
+	}
+	
+	public Cargo(String descricao) {
+		this.descricao = descricao;
+	}
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
