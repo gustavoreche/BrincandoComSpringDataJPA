@@ -16,6 +16,7 @@ public class CargoService {
 	private static final String BUSCA_CARGOS = "2";
 	private static final String ATUALIZA_CARGO = "3";
 	private static final String DELETA_CARGO = "4";
+	private static final String BUSCA_CARGO_POR_LETRAS = "12";
 
 	private Boolean ficaNoSistema = true;
 	
@@ -42,6 +43,18 @@ public class CargoService {
 				salva(entradaDeDados);
 				break;
 			case BUSCA_CARGOS:
+				System.out.println("Deseja buscar cargos por: ");
+				System.out.println("11 - Todos os cargos");
+				System.out.println("12 - Digite letras e verifique se contem o cargo");
+				System.out.print("R: ");
+				String buscaCargo = entradaDeDados.nextLine();
+				if(BUSCA_CARGO_POR_LETRAS.equalsIgnoreCase(buscaCargo)) {
+					System.out.print("Digite as letras: ");
+					String letras = entradaDeDados.nextLine();
+					this.cargoRepository.findByDescricaoContaining(letras)
+						.forEach(cargo -> System.out.println(cargo));
+					break;
+				}
 				exibeTodosCargos();
 				break;
 			case ATUALIZA_CARGO:
