@@ -13,6 +13,10 @@ import br.com.springdata.modelo.UnidadeDeTrabalho;
 public interface UnidadeDeTrabalhoRepository extends CrudRepository<UnidadeDeTrabalho, Integer> {
 	
 	@Query("SELECT udt FROM UnidadeDeTrabalho udt WHERE udt.descricao LIKE %:letras%")
-	List<UnidadeDeTrabalho> procuraUnidadeDeTrabalhoSeContemLetras(@Param("letras") String letras);
+	List<UnidadeDeTrabalho> procuraUnidadeDeTrabalhoPorNomeSeContemLetras(@Param("letras") String letras);
+	
+	@Query(value = "SELECT * FROM tb_unidade_de_trabalho WHERE endereco LIKE %:letras%", 
+			nativeQuery = true)
+	List<UnidadeDeTrabalho> procuraUnidadeDeTrabalhoPorEndercoSeContemLetras(@Param("letras") String letras);
 
 }

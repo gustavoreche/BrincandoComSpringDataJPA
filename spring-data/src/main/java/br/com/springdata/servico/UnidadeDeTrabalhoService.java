@@ -16,7 +16,8 @@ public class UnidadeDeTrabalhoService {
 	private static final String BUSCA_UNIDADES_DE_TRABALHO = "2";
 	private static final String ATUALIZA_UNIDADE_DE_TRABALHO = "3";
 	private static final String DELETA_UNIDADE_DE_TRABALHO = "4";
-	private static final String BUSCA_UNIDADE_DE_TRABALHO_POR_LETRAS = "12";
+	private static final String BUSCA_UNIDADE_DE_TRABALHO_POR_NOME_POR_LETRAS = "12";
+	private static final String BUSCA_UNIDADE_DE_TRABALHO_POR_ENDERECO_POR_LETRAS = "13";
 
 	private Boolean ficaNoSistema = true;
 	
@@ -46,14 +47,21 @@ public class UnidadeDeTrabalhoService {
 			case BUSCA_UNIDADES_DE_TRABALHO:
 				System.out.println("Deseja buscar unidades de trabalho por: ");
 				System.out.println("11 - Todas as unidades de trabalho");
-				System.out.println("12 - Digite letras e verifique se contem a unidade de trabalho");
+				System.out.println("12 - Digite letras e verifique se contem a unidade de trabalho por NOME");
+				System.out.println("13 - Digite letras e verifique se contem a unidade de trabalho por ENDERECO");
 				System.out.print("R: ");
 				String buscaUnidade = entradaDeDados.nextLine();
-				if(BUSCA_UNIDADE_DE_TRABALHO_POR_LETRAS.equalsIgnoreCase(buscaUnidade)) {
+				if(BUSCA_UNIDADE_DE_TRABALHO_POR_NOME_POR_LETRAS.equalsIgnoreCase(buscaUnidade) ||
+						BUSCA_UNIDADE_DE_TRABALHO_POR_ENDERECO_POR_LETRAS.equalsIgnoreCase(buscaUnidade)) {
 					System.out.print("Digite as letras: ");
 					String letras = entradaDeDados.nextLine();
-					this.unidadeDeTrabalhoRepository.procuraUnidadeDeTrabalhoSeContemLetras(letras)
+					if(BUSCA_UNIDADE_DE_TRABALHO_POR_NOME_POR_LETRAS.equalsIgnoreCase(buscaUnidade)) {
+						this.unidadeDeTrabalhoRepository.procuraUnidadeDeTrabalhoPorNomeSeContemLetras(letras)
+						.forEach(unidadeDeTrabalho -> System.out.println(unidadeDeTrabalho));						
+					} else {
+						this.unidadeDeTrabalhoRepository.procuraUnidadeDeTrabalhoPorEndercoSeContemLetras(letras)
 						.forEach(unidadeDeTrabalho -> System.out.println(unidadeDeTrabalho));
+					}
 					break;
 				}
 				exibeTodasUnidadesDeTrabalho();
