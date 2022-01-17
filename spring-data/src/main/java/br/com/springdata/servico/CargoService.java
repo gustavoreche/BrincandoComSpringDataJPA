@@ -5,6 +5,7 @@ import java.util.Scanner;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import br.com.springdata.modelo.Cargo;
@@ -95,7 +96,7 @@ public class CargoService {
 	}
 	
 	public void exibeTodosCargos() {
-		Pageable paginacao = PageRequest.of(0, 10, Sort.unsorted());
+		Pageable paginacao = PageRequest.of(0, 10, Sort.by(Direction.ASC, "descricao"));
 		this.operacoes.buscaTodosPaginados(this.cargoRepository, paginacao);
 	}
 	
