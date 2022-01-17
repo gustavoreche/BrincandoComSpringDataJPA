@@ -22,6 +22,7 @@ public class FuncionarioService {
 	private static final String BUSCA_FUNCIONARIOS = "2";
 	private static final String ATUALIZA_FUNCIONARIO = "3";
 	private static final String DELETA_FUNCIONARIO = "4";
+	private static final String EXIBE_SOMENTE_ID_NOME_SALARIO = "12";
 
 	private Boolean ficaNoSistema = true;
 	
@@ -53,6 +54,18 @@ public class FuncionarioService {
 				salva(entradaDeDados);
 				break;
 			case BUSCA_FUNCIONARIOS:
+				System.out.println("Deseja buscar funcionarios por: ");
+				System.out.println("11 - Todos os atributos");
+				System.out.println("12 - Somente IDs, nomes e salarios dos funcionarios");
+				System.out.print("R: ");
+				String exibeSomenteAlgunsDados = entradaDeDados.nextLine();
+				if(EXIBE_SOMENTE_ID_NOME_SALARIO.equalsIgnoreCase(exibeSomenteAlgunsDados)) {
+					this.funcionarioRepository.exibeSomenteIdNomeESalario()
+						.forEach(cargo -> System.out.println("ID: " + cargo.getId()
+								+ " || Nome: " + cargo.getNome()
+								+ " || Salario: R$" + cargo.getSalario()));
+					break;
+				}
 				this.operacoes.buscaTodos(this.funcionarioRepository);
 				break;
 			case ATUALIZA_FUNCIONARIO:
