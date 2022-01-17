@@ -2,6 +2,9 @@ package br.com.springdata.servico;
 
 import java.util.Scanner;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import br.com.springdata.modelo.Cargo;
@@ -92,7 +95,8 @@ public class CargoService {
 	}
 	
 	public void exibeTodosCargos() {
-		this.operacoes.buscaTodos(this.cargoRepository);
+		Pageable paginacao = PageRequest.of(0, 10, Sort.unsorted());
+		this.operacoes.buscaTodosPaginados(this.cargoRepository, paginacao);
 	}
 	
 	public Cargo buscaCargoPorId(Integer id) {

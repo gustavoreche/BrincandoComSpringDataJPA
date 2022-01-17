@@ -7,7 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,6 +18,13 @@ public class Operacoes {
 	public void buscaTodos(CrudRepository<?, Integer> repository) {
 		System.out.println("------------------------------------");
 		Iterable<?> objetos = repository.findAll();
+		objetos.forEach(objeto -> System.out.println(objeto));
+		System.out.println("------------------------------------");
+	}
+	
+	public void buscaTodosPaginados(PagingAndSortingRepository<?, Integer> repository, Pageable paginacao) {
+		System.out.println("------------------------------------");
+		Iterable<?> objetos = repository.findAll(paginacao);
 		objetos.forEach(objeto -> System.out.println(objeto));
 		System.out.println("------------------------------------");
 	}
