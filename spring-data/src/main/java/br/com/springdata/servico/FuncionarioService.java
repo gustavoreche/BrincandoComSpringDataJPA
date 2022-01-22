@@ -2,16 +2,20 @@ package br.com.springdata.servico;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import br.com.springdata.modelo.Cargo;
 import br.com.springdata.modelo.Funcionario;
 import br.com.springdata.modelo.UnidadeDeTrabalho;
 import br.com.springdata.repositorio.FuncionarioRepository;
+import br.com.springdata.specification.FuncionarioSpecification;
 import br.com.springdata.util.Operacoes;
 
 @Service
@@ -23,6 +27,7 @@ public class FuncionarioService {
 	private static final String ATUALIZA_FUNCIONARIO = "3";
 	private static final String DELETA_FUNCIONARIO = "4";
 	private static final String EXIBE_SOMENTE_ID_NOME_SALARIO = "12";
+	private static final String BUSCA_DINAMICA = "13";
 
 	private Boolean ficaNoSistema = true;
 	
@@ -57,6 +62,7 @@ public class FuncionarioService {
 				System.out.println("Deseja buscar funcionarios por: ");
 				System.out.println("11 - Todos os atributos");
 				System.out.println("12 - Somente IDs, nomes e salarios dos funcionarios");
+				System.out.println("13 - Busca por nome, salario ou data de contratacao");
 				System.out.print("R: ");
 				String exibeSomenteAlgunsDados = entradaDeDados.nextLine();
 				if(EXIBE_SOMENTE_ID_NOME_SALARIO.equalsIgnoreCase(exibeSomenteAlgunsDados)) {
@@ -64,6 +70,31 @@ public class FuncionarioService {
 						.forEach(cargo -> System.out.println("ID: " + cargo.getId()
 								+ " || Nome: " + cargo.getNome()
 								+ " || Salario: R$" + cargo.getSalario()));
+					break;
+				} else if(BUSCA_DINAMICA.equalsIgnoreCase(exibeSomenteAlgunsDados)) {
+					String nome = null;
+					BigDecimal salario = null;
+					LocalDate dataContratacao = null;
+					System.out.print("Digite o nome(ou aperte ENTER para pesquisar por outro parametro): ");
+					String nomeDigitado = entradaDeDados.nextLine();
+					if(Objects.nonNull(nomeDigitado) && !nomeDigitado.trim().isEmpty()) {
+						nome = nomeDigitado;
+					}
+					System.out.print("Digite salario(ou aperte ENTER para pesquisar por outro parametro)(Exemplo: 25.30) R$: ");
+					String salarioDigitado = entradaDeDados.nextLine();
+					if(Objects.nonNull(salarioDigitado) && !salarioDigitado.trim().isEmpty()) {
+						salario = new BigDecimal(salarioDigitado);
+					}
+					System.out.print("Digite a data de contratacao(ou aperte ENTER para pesquisar por outro parametro)(Exemplo: 25/12/2020): ");
+					String dataDigitada = entradaDeDados.nextLine();
+					if(Objects.nonNull(dataDigitada) && !dataDigitada.trim().isEmpty()) {
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+						dataContratacao = LocalDate.parse(dataDigitada, formatter);
+					}
+					this.funcionarioRepository.findAll(Specification.where(FuncionarioSpecification.nome(nome))
+							.or(FuncionarioSpecification.salario(salario))
+							.or(FuncionarioSpecification.dataContratacao(dataContratacao)))
+					.forEach(funcionario -> System.out.println(funcionario));
 					break;
 				}
 				this.operacoes.buscaTodos(this.funcionarioRepository);
